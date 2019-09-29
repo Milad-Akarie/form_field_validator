@@ -6,7 +6,7 @@ A straightforward flutter form field validator that provides common validation o
 
 
 ```dart
-     // use directly in a TextFormField widget
+     // use it directly in a TextFormField widget
      TextFormField(
          validator: EmailValidator(
        message: 'invalid email address',
@@ -18,7 +18,7 @@ A straightforward flutter form field validator that provides common validation o
                message: 'invalid email address',
              ).validate(val));
    
-     // define a reusable instance
+     // create a reusable instance
      final ageValidator = RangeValidator(
        min: 18,
        max: 25,
@@ -29,7 +29,7 @@ A straightforward flutter form field validator that provides common validation o
    
      // for a shorter setup
      final requiredField = RequiredValidator(message: 'this field is required').validate;
-   
+     TextFormField(validator: requiredField);
 
 ```
 
@@ -39,8 +39,8 @@ A straightforward flutter form field validator that provides common validation o
 
   final passwordValidator = MultiValidator([
     RequiredValidator(message: 'password is required'),
-    MinLengthValidator(8, message: 'password must contain at least 8 chararecters'),
-    PatternValidator(RegExp('(?=.*?[#?!@\$%^&*-])'), message: 'passwords must have at least one special charecter')
+    MinLengthValidator(8, message: 'password must be at least 8 digits long'),
+    PatternValidator(RegExp('(?=.*?[#?!@\$%^&*-])'), message: 'passwords must have at least one special character')
   ]);
 
   String password;
@@ -51,7 +51,7 @@ A straightforward flutter form field validator that provides common validation o
       TextFormField(
         obscureText: true,
         onChanged: (val) => password = val,
-        /// call the multi validator function just like any validator
+        /// call the multi validator function just like any other validator
         validator: passwordValidator.validate,
       ),
 
@@ -68,20 +68,14 @@ A straightforward flutter form field validator that provides common validation o
   
   ```dart
   
-  class LYDPhoneValidator extends FormFieldValidatorBase<String> {
-    LYDPhoneValidator({String message = 'enter an lyd valid phone number', bool optional = false}) : super(message, optional);
-  
-    @override
-    String validate(String value) {
-      /// don't validate empty values if the field is optional
-      if (value.isEmpty && optional)
-        return null;
-      else
-        // return null if the input is valid otherwise return the error message
-        return hasMatch('^((\+|00)?218|0?)?(9[0-9]{8})\$', value) ? null : message;
-    }
+class LYDPhoneValidator extends TextFormFieldValidator {
+  LYDPhoneValidator({String message = 'enter a valid LYD phone number', bool optional = false}) : super(message, optional);
+  @override
+  bool isValid(String value) {
+    return hasMatch('^((\+|00)?218|0?)?(9[0-9]{8})\$', value);
   }
-    /// then simply use it like
+}
+    /// use it by assigning it's validate function to the text field validator
     TextFormField(validator: LYDPhoneValidator().validate);
 
   ```
