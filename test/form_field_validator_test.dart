@@ -2,66 +2,129 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 
 void main() {
+  group('RequiredValidator test', () {
+    final String errorText = 'invalid input message';
+    final requiredValidator = RequiredValidator(errorText: errorText);
 
-  group('RequiredValidator test', (){
-    final String errorMessage = 'field is required';
-    final requiredValidator = RequiredValidator(message: errorMessage);
-
-    test('calling validate with an empty value will return $errorMessage', (){
-      expect(errorMessage, requiredValidator.validate(''));
+    test('calling validate with an empty value will return $errorText', () {
+      expect(errorText, requiredValidator(''));
     });
 
     test('calling validate with a value will return null', () {
-      expect(null, requiredValidator.validate('valid input'));
+      expect(null, requiredValidator('valid input'));
     });
   });
 
+  group('EmailValidator test', () {
+    final String errorText = 'invalid input message';
+    final emailValidator = EmailValidator(errorText: errorText);
 
-  group('MaxLenghtValidator test', (){
-    final String errorMessage = 'max lenght is 15';
-    final maxLengthValidator = MaxLengthValidator(15, message: errorMessage);
+    test('calling validate with an invalid email will return $errorText', () {
+      expect(errorText, emailValidator('invalidEmaial.com'));
+    });
 
-    test('calling validate with a string greater then 15 charecters will return $errorMessage', (){
-      expect(errorMessage, maxLengthValidator.validate('short message'));
+    test('calling validate with a valid email will return null', () {
+      expect(null, emailValidator('me@email.com'));
+    });
+  });
+
+  group('MaxLenghtValidator test', () {
+    final String errorText = 'invalid input message';
+    final maxLengthValidator = MaxLengthValidator(15, errorText: errorText);
+
+    test('calling validate with a string greater then 15 charecters will return error text', () {
+      expect(errorText, maxLengthValidator('text greater than 15 charecters'));
     });
 
     test('calling validate with a string equal or less then 15 charecters will return null', () {
-      expect(null, maxLengthValidator.validate('valid input'));
+      expect(null, maxLengthValidator('valid input'));
     });
   });
 
-  group('MinLenghtValidator test', (){
-    final String errorMessage = 'min lenght is 5';
-    final minLengthValidator = MinLengthValidator(5, message: errorMessage);
+  group('MinLenghtValidator test', () {
+    final String errorText = 'invalid input message';
+    final minLengthValidator = MinLengthValidator(5, errorText: errorText);
 
-    test('calling validate with a string < 5 charecters will return $errorMessage', (){
-      expect(errorMessage, minLengthValidator.validate('text'));
+    test('calling validate with a string < 5 charecters will return $errorText', () {
+      expect(errorText, minLengthValidator('text'));
     });
 
     test('calling validate with a string >= 5 charecters will return null', () {
-      expect(null, minLengthValidator.validate('valid text'));
+      expect(null, minLengthValidator('valid text'));
     });
   });
-  
-  group('MultiValidator test', (){
-    final String maxLengthErrorMessage = 'max lenght is 15';
-    final String requiredErrorMessage = 'field is required';
+
+  group('LengthRangeValidator test', () {
+    final errorText = 'invalid input message';
+    final lengthRangeValidator = LengthRangeValidator(min: 3, max: 10, errorText: errorText);
+
+    test('calling validate with a string less then 3 or greater than 10 charecters will return error text', () {
+      expect(errorText, lengthRangeValidator('sh'));
+      expect(errorText, lengthRangeValidator('more than 10 characters message'));
+    });
+
+    test('calling validate with a string equal or less then 15 charecters will return null', () {
+      expect(null, lengthRangeValidator('valid'));
+    });
+  });
+
+  group('RangeValidator test', () {
+    final errorText = 'invalid input message';
+    final rangeValidator = RangeValidator(min: 18, max: 32, errorText: errorText);
+
+    test('calling validate with < 18 or > 32  will return error text', () {
+      expect(errorText, rangeValidator('16'));
+    });
+
+    test('calling validate with >= 18 and <= 32 will return null', () {
+      expect(null, rangeValidator('20'));
+    });
+  });
+
+  group('PatternValidator test', () {
+    final errorText = 'invalid input message';
+    final patternValidator = PatternValidator(r'(?=.*?[#?!@$%^&*-])', errorText: errorText);
+
+    test('calling validate with no special char will return error text', () {
+      expect(errorText, patternValidator('invalid'));
+    });
+
+    test('calling validate with at least one special char will return null', () {
+      expect(null, patternValidator('*'));
+    });
+  });
+
+  group('DateValidator test', () {
+    final errorText = 'invalid input message';
+    final dateValidator = DateValidator('dd/mm/yyyy', errorText: errorText);
+
+    test('calling validate with a date that does not matche the given format will return error text', () {
+      expect(errorText, dateValidator('12-12-2020'));
+    });
+
+    test('calling validate with a date that matches the given format will return null', () {
+      expect(null, dateValidator('12/12/2020'));
+    });
+  });
+
+  group('MultiValidator test', () {
+    final String requiredErrorText = 'field is required';
+    final String maxLengthErrorText = 'max lenght is 15';
     final multiValidator = MultiValidator([
-    RequiredValidator(message: requiredErrorMessage),
-    MaxLengthValidator(15, message: maxLengthErrorMessage),
+      RequiredValidator(errorText: requiredErrorText),
+      MaxLengthValidator(15, errorText: maxLengthErrorText),
     ]);
 
-    test('calling validate with an empty value will return $requiredErrorMessage', (){
-      expect (requiredErrorMessage,multiValidator.validate(''));
+    test('calling validate with an empty value will return $requiredErrorText', () {
+      expect(requiredErrorText, multiValidator(''));
     });
-    test('calling validate with a string > 15 charecters will return $maxLengthErrorMessage', (){
-      expect (maxLengthErrorMessage,multiValidator.validate('a long text that contains more than 15 chars'));
+
+    test('calling validate with a string > 15 charecters will return $maxLengthErrorText', () {
+      expect(maxLengthErrorText, multiValidator('a long text that contains more than 15 chars'));
     });
 
     test('calling validate with a string <= 15 charecters will return null', () {
-      expect(null, multiValidator.validate('short text'));
+      expect(null, multiValidator('short text'));
     });
-
   });
-
 }
