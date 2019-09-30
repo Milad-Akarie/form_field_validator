@@ -20,19 +20,22 @@ abstract class FieldValidator<T> {
   String call(T value) {
     return isValid(value) ? null : errorText;
   }
-
-  /// helper function to check if an input matches a given pattern
-  bool hasMatch(String pattern, String input) => RegExp(pattern).hasMatch(input);
 }
 
 abstract class TextFieldValidator extends FieldValidator<String> {
   TextFieldValidator(String errorText) : super(errorText);
 
+  // return false if you want the validator to return error
+  // message when the value is empty.
   bool get ignoreEmptyValues => true;
+
   @override
   String call(String value) {
     return (ignoreEmptyValues && value.isEmpty) ? null : super.call(value);
   }
+
+  /// helper function to check if an input matches a given pattern
+  bool hasMatch(String pattern, String input) => RegExp(pattern).hasMatch(input);
 }
 
 class RequiredValidator extends TextFieldValidator {
