@@ -71,8 +71,12 @@ class PhoneValidator extends TextFieldValidator {
 	    return hasMatch(r'^((+|00)?218|0?)?(9[0-9]{8})$', value);  
 	  }  
 }  
+
+
    // use it by assigning it to the TextFormField validator  
    TextFormField(validator: LYDPhoneValidator());  
+
+
   
   
 // you can also extend the base FieldValidator class   

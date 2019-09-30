@@ -1,8 +1,8 @@
 name: form_field_validator
 description: A straightforward flutter form field validator that provides common validation options.
 version: 1.0.0
-author:
-homepage:
+author: Milad Akarie <milad.akarie@gmail.com>
+homepage: https://github.com/Milad-Akarie/form_field_validator
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl:
+  intl: ">= 0.16.0 <1.0.0"
 
 dev_dependencies:
   flutter_test:

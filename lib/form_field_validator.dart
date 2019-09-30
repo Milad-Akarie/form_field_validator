@@ -35,7 +35,8 @@ abstract class TextFieldValidator extends FieldValidator<String> {
   }
 
   /// helper function to check if an input matches a given pattern
-  bool hasMatch(String pattern, String input) => RegExp(pattern).hasMatch(input);
+  bool hasMatch(String pattern, String input) =>
+      RegExp(pattern).hasMatch(input);
 }
 
 class RequiredValidator extends TextFieldValidator {
@@ -87,7 +88,8 @@ class LengthRangeValidator extends TextFieldValidator {
   @override
   bool get ignoreEmptyValues => false;
 
-  LengthRangeValidator({@required this.min, @required this.max, @required String errorText}) : super(errorText);
+  LengthRangeValidator({@required this.min, @required this.max, @required String errorText})
+      : super(errorText);
 
   @override
   bool isValid(String value) {
@@ -99,7 +101,8 @@ class RangeValidator extends TextFieldValidator {
   final num min;
   final num max;
 
-  RangeValidator({@required this.min, @required this.max, @required String errorText}) : super(errorText);
+  RangeValidator({@required this.min, @required this.max, @required String errorText})
+      : super(errorText);
 
   @override
   bool isValid(String value) {
@@ -126,7 +129,8 @@ class EmailValidator extends TextFieldValidator {
 class PatternValidator extends TextFieldValidator {
   final Pattern pattern;
 
-  PatternValidator(this.pattern, {@required String errorText}) : super(errorText);
+  PatternValidator(this.pattern, {@required String errorText})
+      : super(errorText);
 
   @override
   bool isValid(String value) => hasMatch(pattern, value);
