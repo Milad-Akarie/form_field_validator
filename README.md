@@ -56,9 +56,9 @@ A straightforward flutter form field validator that provides common validation o
  
 ```dart  
    
-class PhoneValidator extends TextFieldValidator {  
+class LYDPhoneValidator extends TextFieldValidator {  
   // pass the error text to the super constructor  
-  PhoneValidator({String errorText = 'enter a valid LYD phone number'}) : super(errorText);  
+  LYDPhoneValidator({String errorText = 'enter a valid LYD phone number'}) : super(errorText);  
   
   // return false if you want the validator to return error  
   // message when the value is empty.  
