@@ -88,7 +88,7 @@ class CustomValidator extends FieldValidator<T>{
 	  @override  
 	  bool isValid(T value) {  
 	    // TODO: implement isValid  
-	    return null;  
+	    return //condition;
 	  }  
   }  
   
