@@ -128,12 +128,13 @@ class EmailValidator extends TextFieldValidator {
 
 class PatternValidator extends TextFieldValidator {
   final Pattern pattern;
+  final bool caseSensitive;
 
-  PatternValidator(this.pattern, {@required String errorText})
+  PatternValidator(this.pattern, {@required String errorText, this.caseSensitive = true})
       : super(errorText);
 
   @override
-  bool isValid(String value) => hasMatch(pattern, value);
+  bool isValid(String value) => hasMatch(pattern, value, caseSensitive: caseSensitive);
 }
 
 class DateValidator extends TextFieldValidator {
