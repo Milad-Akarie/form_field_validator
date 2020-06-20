@@ -133,21 +133,41 @@ void main() {
   group('MultiValidator test', () {
     final String requiredErrorText = 'field is required';
     final String maxLengthErrorText = 'max lenght is 15';
-    final multiValidator = MultiValidator([
-      RequiredValidator(errorText: requiredErrorText),
-      MaxLengthValidator(15, errorText: maxLengthErrorText),
-    ]);
+    group('MultiValidator with required validator', () {
+      final multiValidator = MultiValidator([
+        RequiredValidator(errorText: requiredErrorText),
+        MaxLengthValidator(15, errorText: maxLengthErrorText),
+      ]);
 
-    test('calling validate with an empty value will return $requiredErrorText', () {
-      expect(requiredErrorText, multiValidator(''));
+      test('calling validate with an empty value will return $requiredErrorText', () {
+        expect(requiredErrorText, multiValidator(''));
+      });
+
+      test('calling validate with a string > 15 charecters will return $maxLengthErrorText', () {
+        expect(maxLengthErrorText, multiValidator('a long text that contains more than 15 chars'));
+      });
+
+      test('calling validate with a string <= 15 charecters will return null', () {
+        expect(null, multiValidator('short text'));
+      });
     });
 
-    test('calling validate with a string > 15 charecters will return $maxLengthErrorText', () {
-      expect(maxLengthErrorText, multiValidator('a long text that contains more than 15 chars'));
-    });
+    group('MultiValidator without required validator', () {
+      final nonRequiredMultiValidator = MultiValidator([
+        MaxLengthValidator(15, errorText: maxLengthErrorText),
+      ]);
 
-    test('calling validate with a string <= 15 charecters will return null', () {
-      expect(null, multiValidator('short text'));
+      test('calling validate with an empty value will return null', () {
+        expect(null, nonRequiredMultiValidator(''));
+      });
+
+      test('calling validate with a string > 15 charecters will return $maxLengthErrorText', () {
+        expect(maxLengthErrorText, nonRequiredMultiValidator('a long text that contains more than 15 chars'));
+      });
+
+      test('calling validate with a string <= 15 charecters will return null', () {
+        expect(null, nonRequiredMultiValidator('short text'));
+      });
     });
   });
 }
