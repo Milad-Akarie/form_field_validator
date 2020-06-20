@@ -35,8 +35,8 @@ abstract class TextFieldValidator extends FieldValidator<String> {
   }
 
   /// helper function to check if an input matches a given pattern
-  bool hasMatch(String pattern, String input) =>
-      RegExp(pattern).hasMatch(input);
+  bool hasMatch(String pattern, String input, {bool caseSensitive: true}) =>
+      RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
 }
 
 class RequiredValidator extends TextFieldValidator {
@@ -123,7 +123,7 @@ class EmailValidator extends TextFieldValidator {
   EmailValidator({@required String errorText}) : super(errorText);
 
   @override
-  bool isValid(String value) => hasMatch(_emailPattern, value);
+  bool isValid(String value) => hasMatch(_emailPattern, value, caseSensitive: false);
 }
 
 class PatternValidator extends TextFieldValidator {

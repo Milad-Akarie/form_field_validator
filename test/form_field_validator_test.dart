@@ -25,6 +25,7 @@ void main() {
 
     test('calling validate with a valid email will return null', () {
       expect(null, emailValidator('me@email.com'));
+      expect(null, emailValidator('Me@email.com'));
     });
   });
 
