@@ -6,6 +6,9 @@ import 'package:intl/intl.dart';
 /// same function signature as FormTextField's validator;
 typedef ValidatorFunction<T> = T Function(T value);
 
+/// function signature for CallbackValidator
+typedef CallbackValidatorFunction<T> = bool Function(T value);
+
 abstract class FieldValidator<T> {
   /// the errorText to display when the validation fails
   final String errorText;
@@ -186,3 +189,17 @@ class MatchValidator {
     return value == value2 ? null : errorText;
   }
 }
+
+/// calls the given callback to validate an input.
+class CallbackValidator<T> extends FieldValidator<T> {
+  CallbackValidator({
+    @required String errorText,
+    @required this.validator,
+  }) : super(errorText);
+
+  final CallbackValidatorFunction<T> validator;
+
+  @override
+  bool isValid(T value) => validator(value);
+}
+
