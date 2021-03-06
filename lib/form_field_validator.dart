@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 /// same function signature as FormTextField's validator;
-typedef ValidatorFunction<T> = T Function(T value);
+typedef FormFieldValidator<T> = String? Function(T? value);
 
 abstract class FieldValidator<T> {
   /// the errorText to display when the validation fails
@@ -22,7 +22,7 @@ abstract class FieldValidator<T> {
   }
 }
 
-abstract class TextFieldValidator extends FieldValidator<String> {
+abstract class TextFieldValidator extends FieldValidator<String?> {
   TextFieldValidator(String errorText) : super(errorText);
 
   // return false if you want the validator to return error
@@ -30,8 +30,8 @@ abstract class TextFieldValidator extends FieldValidator<String> {
   bool get ignoreEmptyValues => true;
 
   @override
-  String? call(String value) {
-    return (ignoreEmptyValues && value.isEmpty) ? null : super.call(value);
+  String? call(String? value) {
+    return (ignoreEmptyValues && value!.isEmpty) ? null : super.call(value);
   }
 
   /// helper function to check if an input matches a given pattern
@@ -46,12 +46,12 @@ class RequiredValidator extends TextFieldValidator {
   bool get ignoreEmptyValues => false;
 
   @override
-  bool isValid(String value) {
-    return value.isNotEmpty;
+  bool isValid(String? value) {
+    return value!.isNotEmpty;
   }
 
   @override
-  String? call(String value) {
+  String? call(String? value) {
     return isValid(value) ? null : errorText;
   }
 }
@@ -62,8 +62,8 @@ class MaxLengthValidator extends TextFieldValidator {
   MaxLengthValidator(this.max, {required String errorText}) : super(errorText);
 
   @override
-  bool isValid(String value) {
-    return value.length <= max;
+  bool isValid(String? value) {
+    return value!.length <= max;
   }
 }
 
@@ -76,8 +76,8 @@ class MinLengthValidator extends TextFieldValidator {
   bool get ignoreEmptyValues => false;
 
   @override
-  bool isValid(String value) {
-    return value.length >= min;
+  bool isValid(String? value) {
+    return value!.length >= min;
   }
 }
 
@@ -92,8 +92,8 @@ class LengthRangeValidator extends TextFieldValidator {
       : super(errorText);
 
   @override
-  bool isValid(String value) {
-    return value.length >= min && value.length <= max;
+  bool isValid(String? value) {
+    return value!.length >= min && value.length <= max;
   }
 }
 
@@ -105,9 +105,9 @@ class RangeValidator extends TextFieldValidator {
       : super(errorText);
 
   @override
-  bool isValid(String value) {
+  bool isValid(String? value) {
     try {
-      final numericValue = num.parse(value);
+      final numericValue = num.parse(value!);
       return (numericValue >= min && numericValue <= max);
     } catch (_) {
       return false;
@@ -123,7 +123,7 @@ class EmailValidator extends TextFieldValidator {
   EmailValidator({required String errorText}) : super(errorText);
 
   @override
-  bool isValid(String value) => hasMatch(_emailPattern.toString(), value, caseSensitive: false);
+  bool isValid(String? value) => hasMatch(_emailPattern.toString(), value!, caseSensitive: false);
 }
 
 class PatternValidator extends TextFieldValidator {
@@ -134,7 +134,7 @@ class PatternValidator extends TextFieldValidator {
       : super(errorText);
 
   @override
-  bool isValid(String value) => hasMatch(pattern.toString(), value, caseSensitive: caseSensitive);
+  bool isValid(String? value) => hasMatch(pattern.toString(), value!, caseSensitive: caseSensitive);
 }
 
 class DateValidator extends TextFieldValidator {
@@ -143,9 +143,9 @@ class DateValidator extends TextFieldValidator {
   DateValidator(this.format, {required String errorText}) : super(errorText);
 
   @override
-  bool isValid(String value) {
+  bool isValid(String? value) {
     try {
-      final DateTime? dateTime = DateFormat(format).parseStrict(value);
+      final DateTime? dateTime = DateFormat(format).parseStrict(value!);
       return dateTime != null;
     } catch (_) {
       return false;
