@@ -5,12 +5,12 @@ author: Milad Akarie <milad.akarie@gmail.com>
 homepage: https://github.com/Milad-Akarie/form_field_validator
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  intl: ">=0.15.7 <=1.0.0"
+  intl: ">=0.17.0 <=1.0.0"
 
 
 dev_dependencies:
