@@ -153,7 +153,7 @@ class DateValidator extends TextFieldValidator {
   }
 }
 
-class MultiValidator extends FieldValidator {
+class MultiValidator extends FieldValidator<String?> {
   final List<FieldValidator> validators;
   static String _errorText = '';
 
