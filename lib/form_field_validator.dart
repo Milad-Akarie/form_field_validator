@@ -162,7 +162,9 @@ class MultiValidator extends FieldValidator<String?> {
   @override
   bool isValid(value) {
     for (FieldValidator validator in validators) {
-      if (validator.call(value) != null) {
+      if (validator is MultiValidator) {
+        if (!validator.isValid(value)) return false;
+      } else if (validator.call(value) != null) {
         _errorText = validator.errorText;
         return false;
       }
