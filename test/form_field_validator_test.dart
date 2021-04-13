@@ -169,5 +169,26 @@ void main() {
         expect(null, nonRequiredMultiValidator('short text'));
       });
     });
+
+    group('Nested MultiValidator with required validator', () {
+      final multiValidator = MultiValidator([
+        MultiValidator([
+          RequiredValidator(errorText: requiredErrorText),
+          MaxLengthValidator(15, errorText: maxLengthErrorText),
+        ])
+      ]);
+
+      test('calling validate with an empty value will return $requiredErrorText', () {
+        expect(requiredErrorText, multiValidator(''));
+      });
+
+      test('calling validate with a string > 15 charecters will return $maxLengthErrorText', () {
+        expect(maxLengthErrorText, multiValidator('a long text that contains more than 15 chars'));
+      });
+
+      test('calling validate with a string <= 15 charecters will return null', () {
+        expect(null, multiValidator('short text'));
+      });
+    });
   });
 }

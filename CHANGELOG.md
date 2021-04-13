@@ -1,3 +1,7 @@
+## [1.0.2]
+
+- Add support for nested multi validator.
+
 ## [1.0.1]
 ### fix intl dependency conflict
 ### add usage example
