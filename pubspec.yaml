@@ -1,6 +1,6 @@
 name: form_field_validator
 description: A straightforward flutter form field validator that provides common validation options.
-version: 1.0.1
+version: 2.0.0
 author: Milad Akarie <milad.akarie@gmail.com>
 homepage: https://github.com/Milad-Akarie/form_field_validator
 
