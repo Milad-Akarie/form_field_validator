@@ -47,7 +47,7 @@ class RequiredValidator extends TextFieldValidator {
 
   @override
   bool isValid(String? value) {
-    return value!.isNotEmpty;
+    return value != null && value.isNotEmpty;
   }
 
   @override
