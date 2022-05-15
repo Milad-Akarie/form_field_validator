@@ -156,14 +156,29 @@ class DateValidator extends TextFieldValidator {
 class MultiValidator extends FieldValidator<String?> {
   final List<FieldValidator> validators;
   static String _errorText = '';
+  final bool multipleErrors;
 
-  MultiValidator(this.validators) : super(_errorText);
+  MultiValidator(this.validators, {this.multipleErrors = false})
+      : super(_errorText);
 
   @override
   bool isValid(value) {
     for (FieldValidator validator in validators) {
       if (validator.call(value) != null) {
-        _errorText = validator.errorText;
+        if (multipleErrors) {
+          // Make sure the error hasn't been cached already
+          if (!errorText.contains(validator.errorText)) {
+            // New errors in new line
+            if (!_errorText.isEmpty) {
+              _errorText += "\n";
+            }
+
+            _errorText += validator.errorText;
+          }
+        } else {
+          _errorText = validator.errorText;
+        }
+
         return false;
       }
     }
