@@ -63,7 +63,7 @@ class MaxLengthValidator extends TextFieldValidator {
 
   @override
   bool isValid(String? value) {
-    return value!.length <= max;
+    return value!.runes.length <= max;
   }
 }
 
@@ -77,7 +77,7 @@ class MinLengthValidator extends TextFieldValidator {
 
   @override
   bool isValid(String? value) {
-    return value!.length >= min;
+    return value!.runes.length >= min;
   }
 }
 
@@ -93,7 +93,7 @@ class LengthRangeValidator extends TextFieldValidator {
 
   @override
   bool isValid(String? value) {
-    return value!.length >= min && value.length <= max;
+    return value!.runes.length >= min && value.runes.length <= max;
   }
 }
 
