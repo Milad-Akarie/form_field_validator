@@ -1,6 +1,5 @@
 library form_field_validator;
 
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 /// same function signature as FormTextField's validator;
