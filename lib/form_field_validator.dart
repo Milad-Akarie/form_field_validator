@@ -1,6 +1,5 @@
 library form_field_validator;
 
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 /// same function signature as FormTextField's validator;
@@ -88,7 +87,8 @@ class LengthRangeValidator extends TextFieldValidator {
   @override
   bool get ignoreEmptyValues => false;
 
-  LengthRangeValidator({required this.min, required this.max, required String errorText})
+  LengthRangeValidator(
+      {required this.min, required this.max, required String errorText})
       : super(errorText);
 
   @override
@@ -101,7 +101,8 @@ class RangeValidator extends TextFieldValidator {
   final num min;
   final num max;
 
-  RangeValidator({required this.min, required this.max, required String errorText})
+  RangeValidator(
+      {required this.min, required this.max, required String errorText})
       : super(errorText);
 
   @override
@@ -123,18 +124,21 @@ class EmailValidator extends TextFieldValidator {
   EmailValidator({required String errorText}) : super(errorText);
 
   @override
-  bool isValid(String? value) => hasMatch(_emailPattern.toString(), value!, caseSensitive: false);
+  bool isValid(String? value) =>
+      hasMatch(_emailPattern.toString(), value!, caseSensitive: false);
 }
 
 class PatternValidator extends TextFieldValidator {
   final Pattern pattern;
   final bool caseSensitive;
 
-  PatternValidator(this.pattern, {required String errorText, this.caseSensitive = true})
+  PatternValidator(this.pattern,
+      {required String errorText, this.caseSensitive = true})
       : super(errorText);
 
   @override
-  bool isValid(String? value) => hasMatch(pattern.toString(), value!, caseSensitive: caseSensitive);
+  bool isValid(String? value) =>
+      hasMatch(pattern.toString(), value!, caseSensitive: caseSensitive);
 }
 
 class DateValidator extends TextFieldValidator {
@@ -162,7 +166,9 @@ class MultiValidator extends FieldValidator<String?> {
   @override
   bool isValid(value) {
     for (FieldValidator validator in validators) {
-      if (validator.call(value) != null) {
+      if (validator is MultiValidator) {
+        if (!validator.isValid(value)) return false;
+      } else if (validator.call(value) != null) {
         _errorText = validator.errorText;
         return false;
       }
@@ -184,5 +190,17 @@ class MatchValidator {
 
   String? validateMatch(String value, String value2) {
     return value == value2 ? null : errorText;
+  }
+}
+
+class ExpressionValidator extends TextFieldValidator {
+  final Function(String? value) experssion;
+
+  ExpressionValidator(this.experssion, {required String errorText})
+      : super(errorText);
+
+  @override
+  bool isValid(String? value) {
+    return experssion(value);
   }
 }
