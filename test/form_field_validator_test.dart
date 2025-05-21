@@ -170,4 +170,22 @@ void main() {
       });
     });
   });
+
+  group('ExpressionValidator test', () {
+    final String emptyErrorText = 'field should be empty';
+    final emptyExperssionValidator = ExpressionValidator(
+      (value) => value!.isEmpty,
+      errorText: emptyErrorText,
+    );
+
+    test('calling validate with an empty string will return true', () {
+      expect(null, emptyExperssionValidator(''));
+    });
+
+    test(
+        'calling validate with an empty string will return error $emptyErrorText',
+        () {
+      expect(emptyErrorText, emptyExperssionValidator('abc'));
+    });
+  });
 }
